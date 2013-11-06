@@ -4,8 +4,8 @@ To install the TestBundle, you may install it via composer or via git submodules
 
 ## Composer Install Instructions
 
-** NOTE/TODO: **
-
+>** NOTE/TODO: **
+>
 > When TestBundle goes public, add to packagist to simplify first step installation to:
 > $ composer require malwarebytes/test-bundle:dev-master
 
