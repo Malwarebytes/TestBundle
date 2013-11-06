@@ -1,0 +1,42 @@
+{
+    "name":"malwarebytes/test-bundle",
+    "description":"Malwarebytes Test Framework and Testing Best Practices for Symfony2",
+    "homepage":"https://github.mb-internal.com/Webapps/TestBundle",
+    "authors": [
+        {
+            "name": "Jonathan Chan",
+            "email": "jchan@malwarebytes.org",
+            "homepage": "http://malwarebytes.org",
+            "role": "Developer"
+        },
+        {
+            "name": "Paul Hendryx",
+            "email": "phendryx@malwarebytes.org",
+            "homepage": "http://malwarebytes.org",
+            "role": "Developer"
+        },
+        {
+            "name": "Josh Hall-Bachner",
+            "email": "jhallbachner@malwarebytes.org",
+            "homepage": "http://malwarebytes.org",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "~2.2",
+        "sensio/buzz-bundle": "dev-master",
+        "malwarebytes/keygen-licensing-api": "dev-master"
+    },
+    "suggest": {
+        "doctrine/data-fixtures": "For testing with data fixtures",
+        "doctrine/migrations": "For testing with migrations"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "Malwarebytes\\TestBundle": ""
+        }
+    },
+    "target-dir":"Malwarebytes/TestBundle"
+}
