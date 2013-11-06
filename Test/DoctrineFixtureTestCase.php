@@ -24,6 +24,7 @@ abstract class DoctrineFixtureTestCase extends \Symfony\Bundle\FrameworkBundle\T
     protected $container;
     /** @var  \Symfony\Bundle\FrameworkBundle\Client */
     protected $client;
+    protected $clearDB=true;
 
     public function setUp()
     {
@@ -38,7 +39,7 @@ abstract class DoctrineFixtureTestCase extends \Symfony\Bundle\FrameworkBundle\T
         $this->em->getConfiguration()->addEntityNamespace('TestSpace', 'Malwarebytes\Test');
 
         // set $this->clearDB = false if you want persisted DB between tests
-        if(isset($this->clearDB) && $this->clearDB===false) {
+        if($this->clearDB===false) {
             $fixtureMonitor=null;
         } else {
             $this->loadFixtures();
