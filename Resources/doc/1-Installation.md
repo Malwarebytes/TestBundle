@@ -30,10 +30,10 @@ To install the TestBundle, you may install it via composer or via git submodules
     ```
 
 
-2. Run composer install:
+2. Run composer update:
 
     ```bash
-    $ composer install malwarebytes/test-bundle
+    $ composer update malwarebytes/test-bundle
     ```
 
 3. Enable the bundle within symfony:
