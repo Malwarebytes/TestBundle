@@ -25,8 +25,6 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "~2.2",
-        "sensio/buzz-bundle": "dev-master",
-        "malwarebytes/keygen-licensing-api": "dev-master"
     },
     "suggest": {
         "doctrine/data-fixtures": "For testing with data fixtures",
