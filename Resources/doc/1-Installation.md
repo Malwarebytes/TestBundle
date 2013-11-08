@@ -47,7 +47,7 @@ To install the TestBundle, you may install it via composer or via git submodules
     {
          $bundlles = array (
              // ...
-             new Malwarebytes\AltamiraBundle\MalwarebytesTestBundle(),
+             new Malwarebytes\TestBundle\MalwarebytesTestBundle(),
          );
     }
     ```
@@ -72,7 +72,7 @@ To install the TestBundle, you may install it via composer or via git submodules
     {
          $bundlles = array (
              // ...
-             new Malwarebytes\AltamiraBundle\MalwarebytesTestBundle(),
+             new Malwarebytes\TestBundle\MalwarebytesTestBundle(),
          );
     }
     ```
