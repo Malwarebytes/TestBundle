@@ -27,12 +27,10 @@ use Symfony\Component\Console\Input\ArrayInput;
  *
  * @package Malwarebytes\TestBundle\Test
  */
-class DoctrineMigrationTestCase extends WebTestCase {
+class DoctrineMigrationTestCase extends BaseWebTestCase {
 
     /** @var  App */
     protected $application;
-    /** @var  Client */
-    protected $client;
     /** @var  EntityManager */
     protected $em;
 

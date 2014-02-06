@@ -17,13 +17,11 @@ use Doctrine\ORM\EntityManager;
  * Class DoctrineFixtureTestCase
  * @package Malwarebytes\Licensing\MigrationBundle\Test\fixtures\doctrine
  */
-abstract class DoctrineFixtureTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
+abstract class DoctrineFixtureTestCase extends BaseWebTestCase
 {
     /** @var EntityManager */
     protected $em;
     protected $container;
-    /** @var  \Symfony\Bundle\FrameworkBundle\Client */
-    protected $client;
     protected $clearDB=true;
 
     public function setUp()
