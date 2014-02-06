@@ -27,18 +27,16 @@ use Symfony\Component\Console\Input\ArrayInput;
  *
  * @package Malwarebytes\TestBundle\Test
  */
-class DoctrineMigrationTestCase extends WebTestCase {
+class DoctrineMigrationTestCase extends BaseWebTestCase {
 
     /** @var  App */
     protected $application;
-    /** @var  Client */
-    protected $client;
     /** @var  EntityManager */
     protected $em;
 
     public function setUp()
     {
-        $this->client = self::createClient();
+        parent::setUp();
 
         $this->em = self::$kernel->getContainer()
             ->get('doctrine')
@@ -55,4 +53,8 @@ class DoctrineMigrationTestCase extends WebTestCase {
         $this->application->run($input, null);
     }
 
+    public function __construct(Client $client = null)
+    {
+        $this->client = $client;
+    }
 }

@@ -17,22 +17,20 @@ use Doctrine\ORM\EntityManager;
  * Class DoctrineFixtureTestCase
  * @package Malwarebytes\Licensing\MigrationBundle\Test\fixtures\doctrine
  */
-abstract class DoctrineFixtureTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
+abstract class DoctrineFixtureTestCase extends BaseWebTestCase
 {
     /** @var EntityManager */
     protected $em;
     protected $container;
-    /** @var  \Symfony\Bundle\FrameworkBundle\Client */
-    protected $client;
     protected $clearDB=true;
 
     public function setUp()
     {
+        parent::setUp();
         $classLoader = new \Doctrine\Common\ClassLoader('Malwarebytes\Test', __DIR__.DIRECTORY_SEPARATOR."fixtures".DIRECTORY_SEPARATOR.'doctrine');
         $classLoader->register();
 
 
-        $this->client=static::createClient();
         $this->container=$this->client->getContainer();
         $this->em=$this->client->getContainer()->get('doctrine')->getManager();
         $this->em->getConfiguration()->getMetadataDriverImpl()->addDriver($this->em->getConfiguration()->newDefaultAnnotationDriver(array(__DIR__.DIRECTORY_SEPARATOR."fixtures".DIRECTORY_SEPARATOR.'doctrine'.DIRECTORY_SEPARATOR."Malwarebytes".DIRECTORY_SEPARATOR."Test"), false),"Malwarebytes\Test");
