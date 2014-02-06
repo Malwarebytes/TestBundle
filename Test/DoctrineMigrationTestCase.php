@@ -55,4 +55,8 @@ class DoctrineMigrationTestCase extends WebTestCase {
         $this->application->run($input, null);
     }
 
+    public function __construct(Client $client = null)
+    {
+        $this->client = $client;
+    }
 }
