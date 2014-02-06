@@ -36,7 +36,7 @@ class DoctrineMigrationTestCase extends BaseWebTestCase {
 
     public function setUp()
     {
-        $this->client = self::createClient();
+        parent::setUp();
 
         $this->em = self::$kernel->getContainer()
             ->get('doctrine')

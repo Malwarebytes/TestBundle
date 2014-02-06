@@ -26,11 +26,11 @@ abstract class DoctrineFixtureTestCase extends BaseWebTestCase
 
     public function setUp()
     {
+        parent::setUp();
         $classLoader = new \Doctrine\Common\ClassLoader('Malwarebytes\Test', __DIR__.DIRECTORY_SEPARATOR."fixtures".DIRECTORY_SEPARATOR.'doctrine');
         $classLoader->register();
 
 
-        $this->client=static::createClient();
         $this->container=$this->client->getContainer();
         $this->em=$this->client->getContainer()->get('doctrine')->getManager();
         $this->em->getConfiguration()->getMetadataDriverImpl()->addDriver($this->em->getConfiguration()->newDefaultAnnotationDriver(array(__DIR__.DIRECTORY_SEPARATOR."fixtures".DIRECTORY_SEPARATOR.'doctrine'.DIRECTORY_SEPARATOR."Malwarebytes".DIRECTORY_SEPARATOR."Test"), false),"Malwarebytes\Test");

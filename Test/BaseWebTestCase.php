@@ -16,6 +16,12 @@ class BaseWebTestCase extends WebTestCase {
     /** @var  Client */
     protected $client;
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->client = self::createClient();
+    }
 
     protected function assertRedirect($location)
     {
