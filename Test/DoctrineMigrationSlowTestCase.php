@@ -5,9 +5,7 @@
  * Time: 1:32 PM
  */
 
-
 namespace Malwarebytes\TestBundle\Test;
-
 
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\ORM\EntityManager;
@@ -27,7 +25,8 @@ use Symfony\Component\Console\Input\ArrayInput;
  *
  * @package Malwarebytes\TestBundle\Test
  */
-class DoctrineMigrationSlowTestCase extends BaseWebTestCase {
+class DoctrineMigrationSlowTestCase extends BaseWebTestCase
+{
 
     /** @var  App */
     protected $application;
@@ -38,7 +37,8 @@ class DoctrineMigrationSlowTestCase extends BaseWebTestCase {
     {
     }
 
-    function __destruct() {
+    public function __destruct()
+    {
     }
 
     public function setUp()
@@ -63,5 +63,4 @@ class DoctrineMigrationSlowTestCase extends BaseWebTestCase {
     public function tearDown()
     {
     }
-
 }

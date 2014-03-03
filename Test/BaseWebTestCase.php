@@ -8,11 +8,11 @@
 
 namespace Malwarebytes\TestBundle\Test;
 
-
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class BaseWebTestCase extends WebTestCase {
+class BaseWebTestCase extends WebTestCase
+{
     /** @var  Client */
     protected $client;
 
@@ -38,4 +38,4 @@ class BaseWebTestCase extends WebTestCase {
         self::assertEquals('http://localhost'.$this->client->getContainer()->get('router')->generate($route), $response->headers->get('Location'));
 
     }
-} 
+}

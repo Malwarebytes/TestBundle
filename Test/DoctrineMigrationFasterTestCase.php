@@ -5,13 +5,10 @@
  * Time: 1:32 PM
  */
 
-
 namespace Malwarebytes\TestBundle\Test;
-
 
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application as App;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -27,7 +24,8 @@ use Symfony\Component\Console\Input\ArrayInput;
  *
  * @package Malwarebytes\TestBundle\Test
  */
-class DoctrineMigrationFasterTestCase extends BaseWebTestCase {
+class DoctrineMigrationFasterTestCase extends BaseWebTestCase
+{
 
     /** @var  App */
     protected $application;
@@ -90,5 +88,4 @@ class DoctrineMigrationFasterTestCase extends BaseWebTestCase {
         $this->em->getConnection()->rollback();
         $this->em->getConnection()->close();
     }
-
 }
