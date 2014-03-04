@@ -14,11 +14,13 @@ use Symfony\Bundle\FrameworkBundle\Console\Application as App;
 use Symfony\Component\Console\Input\ArrayInput;
 
 /**
- * Class DoctrineMigrationTestCase
+ * Class DoctrineTransactionTestCase
  *
- * WebTestCase with Doctrine Migrations setup before each test is run.
+ * WebTestCase with Doctrine Migrations setup on first test run, then creating a transaction before and
+ * then rolling back after each test is run.
  *
- * NOTE: This WebTestCase WILL DROP the DB on each test run. Please run this only against a dev DB
+ * NOTE: This WebTestCase WILL DROP the DB when the first test is executed in any test file. Please run
+ * this only against a dev DB
  *
  * Each test will have a clean migrated DB, useful for testing in a production like environment.
  *
@@ -48,7 +50,6 @@ class DoctrineTransactionTestCase extends BaseWebTestCase
             ->getManager();
 
         if ($this->firstRun) {
-            echo "dropping database";
             $this->firstRun = false;
 
             $tool = new \Doctrine\ORM\Tools\SchemaTool($this->em);

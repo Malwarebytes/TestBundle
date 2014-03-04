@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application as App;
 use Symfony\Component\Console\Input\ArrayInput;
 
 /**
- * Class DoctrineMigrationTestCase
+ * Class DoctrineDropCreateMigrateTestCase
  *
  * WebTestCase with Doctrine Migrations setup before each test is run.
  *
