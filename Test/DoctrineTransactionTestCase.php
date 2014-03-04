@@ -24,7 +24,7 @@ use Symfony\Component\Console\Input\ArrayInput;
  *
  * @package Malwarebytes\TestBundle\Test
  */
-class DoctrineMigrationFasterTestCase extends BaseWebTestCase
+class DoctrineTransactionTestCase extends BaseWebTestCase
 {
 
     /** @var  App */
@@ -34,9 +34,9 @@ class DoctrineMigrationFasterTestCase extends BaseWebTestCase
 
     protected $firstRun;
 
-    public function __construct($firstRun = false)
+    public function __construct()
     {
-        $this->firstRun = $firstRun;
+        $this->firstRun = true;
     }
 
     public function setUp()
@@ -48,6 +48,7 @@ class DoctrineMigrationFasterTestCase extends BaseWebTestCase
             ->getManager();
 
         if ($this->firstRun) {
+            echo "dropping database";
             $this->firstRun = false;
 
             $tool = new \Doctrine\ORM\Tools\SchemaTool($this->em);

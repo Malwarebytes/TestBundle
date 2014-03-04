@@ -25,7 +25,7 @@ use Symfony\Component\Console\Input\ArrayInput;
  *
  * @package Malwarebytes\TestBundle\Test
  */
-class DoctrineMigrationSlowTestCase extends BaseWebTestCase
+class DoctrineDropCreateMigrateTestCase extends BaseWebTestCase
 {
 
     /** @var  App */
