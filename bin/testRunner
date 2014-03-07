@@ -15,10 +15,33 @@
  * Time: 12:50 PM
  */
 
-if (file_exists($a = __DIR__.'/../../../../autoload.php')) {
+
+
+if (file_exists($a = __DIR__.'/../../../../../autoload.php')) {
     require_once $a;
 } else {
     require_once __DIR__.'/vendor/autoload.php';
 }
 
-echo __DIR__;
+use Malwarebytes\TestBundle\Console\Application;
+
+
+if (count($argv) >=2 && in_array($argv[1],array('unit','functional','integration'))) {
+    if (\Malwarebytes\TestBundle\Console\Command\SetupCommand::isConfigured()) {
+        $command = new PHPUnit_TextUI_Command();
+        $argv[] = "--testsuite";
+        $argv[] = $argv[1];
+        $argv[] = '-c';
+        $argv[] = __DIR__.'/../../../../../../app';
+        unset($argv[1]);
+
+
+        return $command->run($argv, true);
+    } else {
+        echo "It does not appear that your project is setup to use Malwarebytes TestBundle Framework. Please run '.". DIRECTORY_SEPARATOR .'bin'.DIRECTORY_SEPARATOR."testRunner setup' first."  ;
+    }
+} else {
+    $application = new Application();
+    $application->run();
+}
+
