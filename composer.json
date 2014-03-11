@@ -24,7 +24,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "composer/composer": "1.0.*@dev",
+        "composer/composer": "1.0.0-alpha8",
         "symfony/symfony": "~2.2",
 	    "phpunit/phpunit": "3.7.x"
     },
