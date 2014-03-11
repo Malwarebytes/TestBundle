@@ -24,8 +24,9 @@
     ],
     "require": {
         "php": ">=5.3.3",
+        "composer/composer": "1.0.*@dev",
         "symfony/symfony": "~2.2",
-	"phpunit/phpunit": "3.7.x"
+	    "phpunit/phpunit": "3.7.x"
     },
     "suggest": {
         "doctrine/data-fixtures": "For testing with data fixtures",
