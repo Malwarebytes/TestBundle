@@ -9,9 +9,12 @@ namespace Malwarebytes\TestBundle\Test;
 
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\ORM\EntityManager;
+use Malwarebytes\TestBundle\Event\ImportDataEvent;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application as App;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class DoctrineTransactionTestCase
@@ -77,6 +80,11 @@ class DoctrineTransactionTestCase extends BaseWebTestCase
                 $stmt2 = $conn->prepare($sql);
                 $stmt2->execute();
             }
+
+            $event = new ImportDataEvent(self::$kernel->getContainer());
+
+            $dispatcher = new ContainerAwareEventDispatcher(self::$kernel->getContainer());
+            $dispatcher->dispatch('malwarebytes.test.importdataevent', $event);
         }
 
         // Start transaction
