@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application as App;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Class DoctrineTransactionTestCase
@@ -81,10 +82,9 @@ class DoctrineTransactionTestCase extends BaseWebTestCase
                 $stmt2->execute();
             }
 
-            $event = new ImportDataEvent(self::$kernel->getContainer());
-
-            $dispatcher = new ContainerAwareEventDispatcher(self::$kernel->getContainer());
-            $dispatcher->dispatch('malwarebytes.test.importdataevent', $event);
+            $event = self::$kernel->getContainer()->get('malwarebytes_test.import_data_event');
+            $dispatcher = self::$kernel->getContainer()->get('event_dispatcher');
+            $dispatcher->dispatch('malwarebytes_test.events.import', $event);
         }
 
         // Start transaction
