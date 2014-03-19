@@ -19,16 +19,16 @@
             <directory>../src/*/Bundle/*Bundle/Tests</directory>
         </testsuite>
         <testsuite name="UnitTests">
-            <directory>../src/*/*Bundle/Tests</directory>
-            <directory>../src/*/Bundle/*Bundle/Tests</directory>
+            <directory>../src/*/*Bundle/Tests/Unit</directory>
+            <directory>../src/*/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
         <testsuite name="FunctionalTests">
-            <directory>../src/*/*Bundle/Tests</directory>
-            <directory>../src/*/Bundle/*Bundle/Tests</directory>
+            <directory>../src/*/*Bundle/Tests/Functional</directory>
+            <directory>../src/*/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
         <testsuite name="IntegrationTests">
-            <directory>../src/*/*Bundle/Tests</directory>
-            <directory>../src/*/Bundle/*Bundle/Tests</directory>
+            <directory>../src/*/*Bundle/Tests/Integration</directory>
+            <directory>../src/*/Bundle/*Bundle/Tests/Integration</directory>
         </testsuite>
     </testsuites>
 

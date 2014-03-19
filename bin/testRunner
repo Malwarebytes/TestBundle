@@ -27,19 +27,55 @@ use Malwarebytes\TestBundle\Console\Application;
 
 
 if (count($argv) >=2 && in_array($argv[1],array('unit','functional','integration'))) {
-    if (\Malwarebytes\TestBundle\Console\Command\SetupCommand::isConfigured()) {
-        $command = new PHPUnit_TextUI_Command();
-        $argv[] = "--testsuite";
-        $argv[] = $argv[1];
-        $argv[] = '-c';
-        $argv[] = __DIR__.'/../../../../../../app';
-        unset($argv[1]);
-
-
-        return $command->run($argv, true);
-    } else {
+    if (! \Malwarebytes\TestBundle\Console\Command\SetupCommand::isConfigured()) {
         echo "It does not appear that your project is setup to use Malwarebytes TestBundle Framework. Please run '.". DIRECTORY_SEPARATOR .'bin'.DIRECTORY_SEPARATOR."testRunner setup' first."  ;
+        return;
     }
+
+    $testExists = false;
+
+    switch($argv[1]) {
+        case "unit":
+            $searchPaths = array(
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/*Bundle/Tests/Unit"),
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/Bundle/*Bundle/Tests/Unit"),
+            );
+            break;
+        case "functional":
+            $searchPaths = array(
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/*Bundle/Tests/Functional"),
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/Bundle/*Bundle/Tests/Functional"),
+            );
+            break;
+        case "integration":
+            $searchPaths = array(
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/*Bundle/Tests/Integration"),
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/Bundle/*Bundle/Tests/Integration"),
+            );
+            break;
+    }
+
+
+    foreach ($searchPaths as $searchPath) {
+        foreach (glob($searchPath) as $filename) {
+            $testExists = true;
+        }
+    }
+
+    if (!$testExists) {
+        echo "Malwarebytes Test Bundle is properly setup, but you have not created any tests yet. Please refer to the docs on how to properly create tests to be run by Malwarebytes Test Bundle.";
+        return;
+    }
+
+    $command = new PHPUnit_TextUI_Command();
+    $argv[] = "--testsuite";
+    $argv[] = $argv[1];
+    $argv[] = '-c';
+    $argv[] = __DIR__.'/../../../../../../app';
+    unset($argv[1]);
+
+
+    return $command->run($argv, true);
 } else {
     $application = new Application();
     $application->run();

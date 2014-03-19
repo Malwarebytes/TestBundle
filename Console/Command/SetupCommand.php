@@ -91,6 +91,10 @@ class SetupCommand extends Command {
             //$output->write("<info>Regenerating parameters.yml via composer install...</info>");
             //Script
         }
+
+        $output->writeln("");
+        $output->writeln("<info>Malwarebytes TestBundle setup complete!</info>");
+
     }
 
     private function setupPhpunitXmlDist($output)
