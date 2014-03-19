@@ -8,7 +8,9 @@
 
 namespace Malwarebytes\TestBundle\Console\Command;
 
+
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,21 +51,107 @@ class SetupCommand extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //$name = $input->getArgument('name');
-        $name = "world";
-        if ($name) {
-            $text = 'Hello '.$name;
-        } else {
-            $text = 'Hello';
+        self::init();
+
+        /** @var DialogHelper $dialog */
+        $dialog = $this->getHelperSet()->get('dialog');
+
+        if (!$dialog->askConfirmation($output,'<question>Do you want to setup your project to use Malwarebytes Test Bundle? [y|N] </question>',false)) {
+            return;
         }
 
-        $output->writeln($text);
+        if ( !self::isParametersYmlDistConfigured() ) {
+            $output->writeln("<info>Updating parameters.yml.dist...</info>");
+            $this->setupParametersYmlDist();
+            $output->writeln("<info>Updated parameters.yml.dist!</info>");
+        } else {
+            $output->writeln("<info>File 'parameters.yml.dist' already setup, not modifying file.</info>");
+        }
+
+        if ( !self::isConfigTestYmlConfigured() ) {
+            $output->writeln("<info>Updating config_test.yml...</info>");
+            $this->setupConfigYml();
+            $output->writeln("<info>Updated config_test.yml!</info>");
+        } else {
+            $output->writeln("<info>File 'config_test.yml' already setup, not modifying file.</info>");
+        }
+
+        if ( !self::isPhpUnitConfigured() ) {
+            $output->writeln("<info>Updating phpunit.xml.dist...</info>");
+            $this->setupPhpunitXmlDist($output);
+            $output->writeln("<info>Updated phpunit.xml.dist!</info>");
+        } else {
+            $output->writeln("<info>File 'phpunit.xml.dist' already setup, not modifying file.</info>");
+        }
+
+        if ( !self::isParametersYmlConfigured() ) {
+            $output->writeln("");
+            $output->writeln("Please run composer.phar install to set test_db_* parameters in parameters.yml");
+            $output->writeln("and finish setup.");
+            //$output->write("<info>Regenerating parameters.yml via composer install...</info>");
+            //Script
+        }
+    }
+
+    private function setupPhpunitXmlDist($output)
+    {
+        $phpunitConfigPath = self::$rootDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'phpunit.xml.dist';
+        $samplePhpUnitConfigPath = realpath(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "doc" . DIRECTORY_SEPARATOR . "ConfigExamples" . DIRECTORY_SEPARATOR . "phpunit.xml.dist");
+
+        if ( file_exists($phpunitConfigPath) ) {
+            $incrementor = 0;
+            while( file_exists($phpunitConfigPath . ".old." . $incrementor) ) {
+                $incrementor++;
+            }
+            $output->writeln("<info>Found existing phpunit.xml.dist, moving to ".$phpunitConfigPath . ".old." . $incrementor."...</info>");
+            rename($phpunitConfigPath,$phpunitConfigPath . ".old." . $incrementor);
+        }
+
+        copy($samplePhpUnitConfigPath,$phpunitConfigPath);
+    }
+
+    private function setupConfigYml()
+    {
+        $testSetupParameters = <<<'EOD'
+
+
+# MalwarebytesTestBundle Generated Code Below
+doctrine:
+    dbal:
+        driver:   %test_db_driver%
+        host:     %test_db_host%
+        port:     %test_db_port%
+        dbname:   %test_db_name%
+        user:     %test_db_user%
+        password: %test_db_password%
+        path:     %test_db_path%
+        charset:  UTF8
+# End of MalwarbytesTestBundle Generated Code
+EOD;
+        file_put_contents(self::$configDir . DIRECTORY_SEPARATOR . "config_test.yml",$testSetupParameters,FILE_APPEND);
+    }
+
+    private function setupParametersYmlDist()
+    {
+        $testSetupParameters = <<<'EOD'
+
+
+    # MalwarebytesTestBundle Generated Code Below
+    # used for functional / integration tests
+    test_db_driver:    pdo_sqlite
+    test_db_host:
+    test_db_port:
+    test_db_name:
+    test_db_user:
+    test_db_password:
+    test_db_path:      %kernel.root_dir%/cache/test/data.sqlite
+    # End of MalwarebytesTestBundle Generated Code
+EOD;
+        file_put_contents(self::$configDir . DIRECTORY_SEPARATOR . "parameters.yml.dist",$testSetupParameters,FILE_APPEND);
     }
 
     /**
      * Checks if Malwarebytes TestBundle has been properly configured.
-     *
-     * TODO: implement me!
      *
      * @return bool
      */
@@ -86,12 +174,12 @@ class SetupCommand extends Command {
 
     private static function isParametersYmlConfigured()
     {
-        self::isParamsYmlConfigured(self::$configDir.DIRECTORY_SEPARATOR."parameters.yml");
+        return self::isParamsYmlConfigured(self::$configDir.DIRECTORY_SEPARATOR."parameters.yml");
     }
 
     private static function isParametersYmlDistConfigured()
     {
-        self::isParamsYmlConfigured(self::$configDir.DIRECTORY_SEPARATOR."parameters.yml.dist");
+        return self::isParamsYmlConfigured(self::$configDir.DIRECTORY_SEPARATOR."parameters.yml.dist");
     }
 
     private static function isParamsYmlConfigured($parametersYmlFile)
