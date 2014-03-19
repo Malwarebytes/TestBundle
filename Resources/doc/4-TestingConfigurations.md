@@ -2,6 +2,11 @@
 
 ## Separating Unit/Functional and Integration Tests
 
+>
+> OBSOLETE
+> This section needs to be updated.
+>
+
 We separate our Integration Tests from our Unit/Functional Tests so that they do not have to be run everytime since they reach out to external services and tend to take much longer than the functional/unit tests. To achieve this functionality, create a ```Functional``` and ```Integration``` folder within your ```Tests``` folder and place the respective tests within the respective folders.
 
 You may copy your phpunit.xml.dist and make it phpunit-unit-functional.xml and change the ```<testsuites>``` block to:
