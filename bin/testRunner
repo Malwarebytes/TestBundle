@@ -71,7 +71,7 @@ if (count($argv) >=2 && in_array($argv[1],array('unit','functional','integration
     }
 
     if (!$testExists) {
-        echo "Malwarebytes Test Bundle is properly setup, but you have not created any tests yet. Please refer to the docs on how to properly create tests to be run by Malwarebytes Test Bundle.";
+        echo "\nMalwarebytes Test Bundle is properly setup, but you have not created any tests yet. Please refer to the docs on how to properly create tests to be run by Malwarebytes Test Bundle.\n\n";
         return;
     }
 
