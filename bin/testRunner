@@ -19,8 +19,13 @@
 
 if (file_exists($a = __DIR__.'/../../../../../autoload.php')) {
     require_once $a;
+    $rootAppDir = realdir(__DIR__.'/../../../../../../app');
+} elseif (file_exists($a = __DIR__ . '../vendor/autoload.php') ) {
+    require_once $a;
+    $rootAppDir = realdir(__DIR__.'/../app');
 } else {
     require_once __DIR__.'/vendor/autoload.php';
+    $rootAppDir = realdir(__DIR__);
 }
 
 use Malwarebytes\TestBundle\Console\Application;
@@ -40,18 +45,21 @@ if (count($argv) >=2 && in_array($argv[1],array('unit','functional','integration
                 \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/*Bundle/Tests/Unit"),
                 \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/Bundle/*Bundle/Tests/Unit"),
             );
+            $testSuite = "UnitTests";
             break;
         case "functional":
             $searchPaths = array(
                 \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/*Bundle/Tests/Functional"),
                 \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/Bundle/*Bundle/Tests/Functional"),
             );
+            $testSuite = "FunctionalTests";
             break;
         case "integration":
             $searchPaths = array(
                 \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/*Bundle/Tests/Integration"),
                 \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/Bundle/*Bundle/Tests/Integration"),
             );
+            $testSuite = "IntegrationTests";
             break;
     }
 
@@ -69,9 +77,9 @@ if (count($argv) >=2 && in_array($argv[1],array('unit','functional','integration
 
     $command = new PHPUnit_TextUI_Command();
     $argv[] = "--testsuite";
-    $argv[] = $argv[1];
+    $argv[] = $testSuite;
     $argv[] = '-c';
-    $argv[] = __DIR__.'/../../../../../../app';
+    $argv[] = $rootAppDir;
     unset($argv[1]);
 
 
