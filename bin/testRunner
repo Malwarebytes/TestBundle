@@ -1,0 +1,91 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * This file is part of the MalwarebytesTestBundle
+ *
+ * (c) Malwarebytes 2014
+ *
+ */
+
+/**
+ * Created by PhpStorm.
+ * User: jonathan
+ * Date: 3/7/14
+ * Time: 12:50 PM
+ */
+
+
+
+if (file_exists($a = __DIR__.'/../../../../../autoload.php')) {
+    require_once $a;
+    $rootAppDir = realpath(__DIR__.'/../../../../../../app');
+} elseif (file_exists($a = __DIR__ . '../vendor/autoload.php') ) {
+    require_once $a;
+    $rootAppDir = realpath(__DIR__.'/../app');
+} else {
+    require_once __DIR__.'/vendor/autoload.php';
+    $rootAppDir = realpath(__DIR__);
+}
+
+use Malwarebytes\TestBundle\Console\Application;
+
+
+if (count($argv) >=2 && in_array($argv[1],array('unit','functional','integration'))) {
+    if (! \Malwarebytes\TestBundle\Console\Command\SetupCommand::isConfigured()) {
+        echo "It does not appear that your project is setup to use Malwarebytes TestBundle Framework. Please run '.". DIRECTORY_SEPARATOR .'bin'.DIRECTORY_SEPARATOR."testRunner setup' first."  ;
+        return;
+    }
+
+    $testExists = false;
+
+    switch($argv[1]) {
+        case "unit":
+            $searchPaths = array(
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/*Bundle/Tests/Unit"),
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/Bundle/*Bundle/Tests/Unit"),
+            );
+            $testSuite = "UnitTests";
+            break;
+        case "functional":
+            $searchPaths = array(
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/*Bundle/Tests/Functional"),
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/Bundle/*Bundle/Tests/Functional"),
+            );
+            $testSuite = "FunctionalTests";
+            break;
+        case "integration":
+            $searchPaths = array(
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/*Bundle/Tests/Integration"),
+                \Malwarebytes\TestBundle\Console\Command\SetupCommand::$rootDir . str_replace(DIRECTORY_SEPARATOR, "/","/src/*/Bundle/*Bundle/Tests/Integration"),
+            );
+            $testSuite = "IntegrationTests";
+            break;
+    }
+
+
+    foreach ($searchPaths as $searchPath) {
+        foreach (glob($searchPath) as $filename) {
+            $testExists = true;
+        }
+    }
+
+    if (!$testExists) {
+        echo "\nMalwarebytes Test Bundle is properly setup, but you have not created any tests yet. Please refer to the docs on how to properly create tests to be run by Malwarebytes Test Bundle.\n\n";
+        return;
+    }
+
+    $command = new PHPUnit_TextUI_Command();
+    $argv[] = "--testsuite";
+    $argv[] = $testSuite;
+    $argv[] = '-c';
+    $argv[] = $rootAppDir;
+    unset($argv[1]);
+
+
+    return $command->run($argv, true);
+} else {
+    $application = new Application();
+    $application->run();
+}
+

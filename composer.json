@@ -24,12 +24,14 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "~2.2"
+        "symfony/symfony": "~2.2",
+	    "phpunit/phpunit": "3.7.x"
     },
     "suggest": {
         "doctrine/data-fixtures": "For testing with data fixtures",
         "doctrine/migrations": "For testing with migrations"
     },
+    "bin": ["bin/testRunner"],
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": {

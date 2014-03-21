@@ -2,37 +2,21 @@
 
 ## Separating Unit/Functional and Integration Tests
 
+>
+> OBSOLETE
+> This section needs to be updated.
+>
+
 We separate our Integration Tests from our Unit/Functional Tests so that they do not have to be run everytime since they reach out to external services and tend to take much longer than the functional/unit tests. To achieve this functionality, create a ```Functional``` and ```Integration``` folder within your ```Tests``` folder and place the respective tests within the respective folders.
-
-You may copy your phpunit.xml.dist and make it phpunit-unit-functional.xml and change the ```<testsuites>``` block to:
-
-```xml
-    <testsuites>
-        <testsuite name="Project Unit/Functional Test Suite">
-            <directory>../src/*/*Bundle/Tests/Functional</directory>
-            <directory>../src/*/*/*Bundle/Tests/Functional</directory>
-        </testsuite>
-    </testsuites>
-```
-
-Make an additional copy of phpunit.xml.dist and make it phpunit-integration.xml and change the ```<testsuites>``` block to:
-
-```xml
-    <testsuites>
-        <testsuite name="Project Integration Test Suite">
-            <directory>../src/*/*Bundle/Tests/Integration</directory>
-            <directory>../src/*/*/*Bundle/Tests/Integration</directory>
-        </testsuite>
-    </testsuites>
-```
 
 You may call the different test suites from command line via:
 
 
 ```bash
 # Symfony Base Project
-$ phpunit -c app/phpunit-unit-functional.xml # for running unit/functional tests
-$ phpunit -c app/phpunit-integration.xml # for running integration tests
+$ bin/testRunner unit # for running unit
+$ bin/testRunner functional # for running functional tests
+$ bin/testRunner integration # for running integration tests
 ```
 
 ## Protecting Production Database From Dev Database Resets
