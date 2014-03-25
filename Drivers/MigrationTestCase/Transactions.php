@@ -1,21 +1,18 @@
 <?php
 /**
- * User: Jonathan Chan <jchan@malwarebytes.org>
- * Date: 11/5/13
- * Time: 1:32 PM
+ * Created by PhpStorm.
+ * User: jonathan
+ * Date: 3/25/14
+ * Time: 2:11 PM
  */
 
-namespace Malwarebytes\TestBundle\Test;
-
+namespace Malwarebytes\TestBundle\Drivers\MigrationTestCase;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\ORM\EntityManager;
-use Malwarebytes\TestBundle\Event\ImportDataEvent;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Malwarebytes\TestBundle\Drivers\TestCaseDriver;
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application as App;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Class DoctrineTransactionTestCase
@@ -30,43 +27,40 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  *
  * @package Malwarebytes\TestBundle\Test
  */
-class DoctrineTransactionTestCase extends BaseWebTestCase
-{
+class Transactions implements TestCaseDriver {
+    static private $firstRun = true;
 
-    /** @var  App */
-    protected $application;
     /** @var  EntityManager */
-    public $em;
+    protected $em;
+    protected $application;
 
-    protected $firstRun;
 
-    public function __construct()
+    /**
+     * Function called to setup database and/or environment for testing
+     *
+     * @param Client $client
+     * @return null
+     */
+    public function setUp(Client $client)
     {
-        $this->firstRun = true;
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->em = self::$kernel->getContainer()
+        $this->em = $client->getContainer()
             ->get('doctrine')
             ->getManager();
 
-        if ($this->firstRun) {
-            $this->firstRun = false;
+        if (self::$firstRun) {
+            self::$firstRun = false;
 
             $tool = new \Doctrine\ORM\Tools\SchemaTool($this->em);
             $tool->dropDatabase();
 
-            $this->application = new App(self::$kernel);
+            $this->application = new App($client->getKernel());
             $this->application->add(new MigrateCommand());
             $this->application->setAutoExit(false);
 
             $input = new ArrayInput(array('command' => 'doctrine:migrations:migrate', '-q' => true, '-n' => true));
             $this->application->run($input, null);
 
-            $conn = self::$kernel->getContainer()->get('doctrine.dbal.default_connection');
+            $conn = $client->getContainer()->get('doctrine.dbal.default_connection');
 
             // Actual code starts here
             $sql = "SHOW tables";
@@ -82,17 +76,22 @@ class DoctrineTransactionTestCase extends BaseWebTestCase
                 $stmt2->execute();
             }
 
-            $event = self::$kernel->getContainer()->get('malwarebytes_test.import_data_event');
-            $dispatcher = self::$kernel->getContainer()->get('event_dispatcher');
-            $dispatcher->dispatch('malwarebytes_test.events.import', $event);
+            $event = $client->getContainer()->get('malwarebytes_test.post_schema_setup_event');
+            $dispatcher = $client->getContainer()->get('event_dispatcher');
+            $dispatcher->dispatch('malwarebytes_test.events.post_schema_setup', $event);
         }
 
         // Start transaction
         $this->em->getConnection()->beginTransaction();
-
     }
 
-    public function tearDown()
+    /**
+     * Function called to teardown database and/or reset the environment
+     *
+     * @param Client $client
+     * @return null
+     */
+    public function tearDown(Client $client)
     {
         // Rollback transaction
         $this->em->getConnection()->rollback();

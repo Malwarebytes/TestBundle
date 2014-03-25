@@ -7,11 +7,11 @@
 
     <parameters>
         <parameter key="malwarebytes_test.config" />
-        <parameter key="malwarebytes_test.import_data_event.class">Malwarebytes\TestBundle\Event\ImportDataEvent</parameter>
+        <parameter key="malwarebytes_test.post_schema_setup_event.class">Malwarebytes\TestBundle\Event\PostSchemaSetupEvent</parameter>
     </parameters>
 
     <services>
-        <service id="malwarebytes_test.import_data_event" class="%malwarebytes_test.import_data_event.class%">
+        <service id="malwarebytes_test.post_schema_setup_event" class="%malwarebytes_test.post_schema_setup_event.class%">
             <call method="setContainer"><argument type="service" id="service_container" /></call>
         </service>
     </services>

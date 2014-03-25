@@ -63,6 +63,8 @@ class DoctrineMigrationTestCase extends BaseWebTestCase {
 
     public function tearDown()
     {
-        $this->driver->tearDown($this->client);
+        if (isset($this->driver) && is_subclass_of($this->driver,"\\Malwarebytes\\TestBundle\\Drivers\\TestCaseDriver")) {
+            $this->driver->tearDown($this->client);
+        }
     }
 }

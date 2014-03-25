@@ -5,7 +5,7 @@ namespace Malwarebytes\TestBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\DependencyInjection\Container;
 
-class ImportDataEvent extends Event
+class PostSchemaSetupEvent extends Event
 {
     /** @var Container */
     private $container;

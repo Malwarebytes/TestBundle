@@ -28,6 +28,8 @@ Installing TestBundle is simple - we simply use Packagist/Composer.
     }
     ```
 
+Note: Since this bundle is only used for tests, you can add it to the test/dev section instead of the main regular session.
+
 3. Setup the config files:
 
     ```bash
