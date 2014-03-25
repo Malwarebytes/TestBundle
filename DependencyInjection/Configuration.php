@@ -29,7 +29,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('doctrine_migration_test_driver')
                     ->defaultValue('DropReload')
                     ->info('Configures which driver')
-                    ->example('example setting')
+                    ->example('DropReload | Transactions')
                 ->end()
             ->end()
         ;
