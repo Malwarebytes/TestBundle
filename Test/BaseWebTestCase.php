@@ -21,6 +21,19 @@ class BaseWebTestCase extends WebTestCase
         parent::setUp();
 
         $this->client = self::createClient();
+        $this->requireTestDBDiffThanProd();
+    }
+
+    protected function requireTestDBDiffThanProd()
+    {
+        $config = $this->client->getContainer()->getParameter("malwarebytes_test.config");
+        if(!$config['force_different_test_db']) {
+            return;
+        }
+        $kernel = $this->client->getKernel();
+        if ($kernel->getContainer()->getParameter("database_driver").$kernel->getContainer()->getParameter("database_host").$kernel->getContainer()->getParameter("database_name") === $kernel->getContainer()->getParameter("test_db_driver").$kernel->getContainer()->getParameter("test_db_host").$kernel->getContainer()->getParameter("test_db_name")) {
+            throw new Exception("Test DB is the same as Production DB. We will not run tests against the production DB.");
+        }
     }
 
     protected function assertRedirect($location)
