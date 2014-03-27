@@ -83,6 +83,10 @@ if (count($argv) >=2 && in_array($argv[1],array('unit','functional','integration
     unset($argv[1]);
 
 
+    $_SERVER['argv'] = $argv;
+    $_SERVER['argv'][0] = 'phpunit';
+
+
     return $command->run($argv, true);
 } else {
     $application = new Application();

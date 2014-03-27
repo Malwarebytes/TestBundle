@@ -7,7 +7,6 @@
 
 namespace Malwarebytes\TestBundle\Test;
 
-
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -30,29 +29,27 @@ abstract class DoctrineFixtureTestCase extends BaseWebTestCase
         $classLoader = new \Doctrine\Common\ClassLoader('Malwarebytes\Test', __DIR__.DIRECTORY_SEPARATOR."fixtures".DIRECTORY_SEPARATOR.'doctrine');
         $classLoader->register();
 
-
         $this->container=$this->client->getContainer();
         $this->em=$this->client->getContainer()->get('doctrine')->getManager();
         $this->em->getConfiguration()->getMetadataDriverImpl()->addDriver($this->em->getConfiguration()->newDefaultAnnotationDriver(array(__DIR__.DIRECTORY_SEPARATOR."fixtures".DIRECTORY_SEPARATOR.'doctrine'.DIRECTORY_SEPARATOR."Malwarebytes".DIRECTORY_SEPARATOR."Test"), false),"Malwarebytes\Test");
         $this->em->getConfiguration()->addEntityNamespace('TestSpace', 'Malwarebytes\Test');
 
         // set $this->clearDB = false if you want persisted DB between tests
-        if($this->clearDB===false) {
+        if ($this->clearDB===false) {
             $fixtureMonitor=null;
         } else {
             $this->loadFixtures();
+
             return;
         }
 
-        try
-        {
+        try {
             $fixtureMonitor=$this->em->find('TestSpace:FixtureMonitor',$this->getTestFixturePath());
-        }
-        catch(\Doctrine\DBAL\DBALException $e)
-        {
-            if(strstr($e->getMessage(), "no such table") || strstr($e->getMessage(),"doesn't exist")) {
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            if (strstr($e->getMessage(), "no such table") || strstr($e->getMessage(),"doesn't exist")) {
                 echo "Schema/DB does not exist - attempting to create db schema.\n";
                 $this->loadFixtures();
+
                 return;
             } else {
                 throw $e;
@@ -62,9 +59,9 @@ abstract class DoctrineFixtureTestCase extends BaseWebTestCase
         $kernel=$this->container->get("kernel");
         $testFixturePath=$kernel->locateResource($this->getTestFixturePath());
         $currentMD5Hash=$this->MD5_DIR($testFixturePath);
-        if(is_null($fixtureMonitor)) {
+        if (is_null($fixtureMonitor)) {
             $this->loadFixtures();
-        } else if ($fixtureMonitor->getHash()!=$currentMD5Hash) {
+        } elseif ($fixtureMonitor->getHash()!=$currentMD5Hash) {
             echo "Test fixtures has changed since last run, reloading test fixtures...\n";
             $this->loadFixtures();
         }
@@ -87,16 +84,11 @@ abstract class DoctrineFixtureTestCase extends BaseWebTestCase
         $fixtureMonitor->setPath($this->getTestFixturePath());
         $fixtureMonitor->setHash($currentMD5Hash);
 
-
-
         /* We do not run from command line anymore so that we can use the same entity manager */
         //$this->_application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
         //$this->_application->setAutoExit(false);
         //$this->runConsole("doctrine:schema:drop", array("--force" => true));
         //$this->runConsole("doctrine:schema:create", array("--em" =>$this->em));
-
-
-
 
         $loader = new \Doctrine\Common\DataFixtures\Loader();
         $loader->loadFromDirectory($testFixturePath);
@@ -116,41 +108,37 @@ abstract class DoctrineFixtureTestCase extends BaseWebTestCase
      *
      * @return string
      */
-    protected abstract function getTestFixturePath();
+    abstract protected function getTestFixturePath();
 
-/*    protected function runConsole($command, Array $options = array())
-    {
-        $options["-e"] = "test";
-        $options["-q"] = null;
-        $options = array_merge($options, array('command' => $command));
-        return $this->_application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
-    }*/
+    /*    protected function runConsole($command, Array $options = array())
+        {
+            $options["-e"] = "test";
+            $options["-q"] = null;
+            $options = array_merge($options, array('command' => $command));
+
+            return $this->_application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+        }*/
 
     protected function MD5_DIR($dir)
     {
-        if (!is_dir($dir))
-        {
+        if (!is_dir($dir)) {
             return false;
         }
 
         $filemd5s = array();
         $d = dir($dir);
 
-        while (false !== ($entry = $d->read()))
-        {
-            if ($entry != '.' && $entry != '..')
-            {
-                if (is_dir($dir.'/'.$entry))
-                {
+        while (false !== ($entry = $d->read())) {
+            if ($entry != '.' && $entry != '..') {
+                if (is_dir($dir.'/'.$entry)) {
                     $filemd5s[] = $this->MD5_DIR($dir.'/'.$entry);
-                }
-                else
-                {
+                } else {
                     $filemd5s[] = md5_file($dir.'/'.$entry);
                 }
             }
         }
         $d->close();
+
         return md5(implode('', $filemd5s));
     }
 
@@ -165,4 +153,3 @@ abstract class DoctrineFixtureTestCase extends BaseWebTestCase
         }
     }
 }
-

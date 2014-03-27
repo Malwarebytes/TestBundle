@@ -12,7 +12,7 @@ Installing TestBundle is simple - we simply use Packagist/Composer.
     $ composer require malwarebytes/test-bundle
     ```
 
-2. Enable the bundle within symfony:
+2. Enable the bundle within symfony in the dev/test section:
 
 
     ``` php
@@ -21,12 +21,15 @@ Installing TestBundle is simple - we simply use Packagist/Composer.
 
     public function registerBundles()
     {
-         $bundles = array (
-             // ...
-             new Malwarebytes\TestBundle\MalwarebytesTestBundle(),
-         );
+        // ...
+        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+            // ...
+            $bundles[] = new Malwarebytes\TestBundle\MalwarebytesTestBundle();
+        }
     }
     ```
+
+Note: Since this bundle is only used for tests, you can add it to the test/dev section instead of the main regular session.
 
 3. Setup the config files:
 

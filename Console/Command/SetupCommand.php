@@ -130,6 +130,10 @@ doctrine:
         password: %test_db_password%
         path:     %test_db_path%
         charset:  UTF8
+
+
+testbundle:
+    doctrine_migration_test_driver: DropMigrate
 # End of MalwarbytesTestBundle Generated Code
 EOD;
         file_put_contents(self::$configDir . DIRECTORY_SEPARATOR . "config_test.yml",$testSetupParameters,FILE_APPEND);
