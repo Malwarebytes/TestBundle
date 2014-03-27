@@ -31,6 +31,10 @@ class Configuration implements ConfigurationInterface
                     ->info('Configures which driver')
                     ->example('DropMigrate | Transactions')
                 ->end()
+                ->booleanNode('force_different_test_db')
+                    ->defaultTrue()
+                    ->info('Enforces a check to make sure tests utilize a different DB than prod or dev.')
+                ->end()
             ->end()
         ;
 
