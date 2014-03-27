@@ -21,7 +21,7 @@ $ bin/testRunner integration # for running integration tests
 
 ## Protecting Production Database From Dev Database Resets
 
-Because all our tests are database destructive, we use different database configurations for test, dev, and prod. We utilize parameters.yml to populate and keep track of the different DB configs. To use this functionality, change the following:
+Because all our tests are database destructive, we use different database configurations for test, dev, and prod. We utilize parameters.yml to populate and keep track of the different DB configs. ```bin/testRunner setup``` sets the following:
 
 config.yml
 ```yml
@@ -69,15 +69,13 @@ parameters:
     test_db_path:      %kernel.root_dir%/cache/test/data.sqlite
 ```
 
-After this, we create our own test.bootstrap.php to check if the production database is the same as the testing database, and if so, prevent accidentally running the tests against the production database. To enable this, copy the test.bootstrap.php from the [example folder](ConfigExamples) and change the bootstrap config line in your phpunit* files to:
 
-```xml
-<phpunit
-    ...
-    bootstrap                   = "test.bootstrap.php" >
+If you would like to override this behavior and have your tests use the same database as prod/dev, simply change the ```force_different_test_db``` in config_test.yml:
+
+
+```
+testbundle:
+    force_different_test_db: false
 ```
 
-
-## Everything Together
-
-Please refer to the [Configuration Examples](ConfigExamples) folder to see all these configuration files together.
+This will allow your test_db_* configs to be exactly the same as your database_* configs. You still need to explicitly define them though.
