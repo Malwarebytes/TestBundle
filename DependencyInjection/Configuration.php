@@ -27,9 +27,9 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('doctrine_migration_test_driver')
-                    ->defaultValue('DropReload')
-                    ->info('Configures which driver DoctrineMigrationTestCase uses')
-                    ->example('DropReload | Transactions')
+                    ->defaultValue('DropMigrate')
+                    ->info('Configures which driver')
+                    ->example('DropMigrate | Transactions')
                 ->end()
                 ->booleanNode('force_different_test_db')
                     ->defaultTrue()

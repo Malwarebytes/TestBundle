@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application as App;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class DropReload implements TestCaseDriver {
+class DropMigrate implements TestCaseDriver {
     /** @var  EntityManager */
     private $em;
     /** @var  App */
