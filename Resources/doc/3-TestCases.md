@@ -9,15 +9,15 @@ DoctrineFixturesTestCase is used to set up test data fixtures in the database to
 DoctrineMigrationsTestCase uses Doctrine Migrations to setup the test suite to be run. There exists different drivers that change how the test is setup. As long as you have properly set up migrations, extending DoctrineMigrationsTestCase will give you this behavior.
 
 
-### DropReload Driver
+### DropMigrate Driver
 
-The DropReload driver is the standard driver for Doctrine Migrations Test Case. Before each test is run, the database is dropped, created and the migration files are run. This is equivalent to running ``` $ app/console doctrine:database:drop ; app/console doctrine:migrations:migrate``` before each test is executed.
+The DropMigrate driver is the standard driver for Doctrine Migrations Test Case. Before each test is run, the database is dropped, created and the migration files are run. This is equivalent to running ``` $ app/console doctrine:database:drop ; app/console doctrine:migrations:migrate``` before each test is executed.
 
 To explicitly define this, set in config.yml or config_test.yml:
 
 ```
 testbundle:
-    doctrine_migration_test_driver: DropReload
+    doctrine_migration_test_driver: DropMigrate
 ```
 
 ## Transactions Driver

@@ -27,9 +27,9 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('doctrine_migration_test_driver')
-                    ->defaultValue('DropReload')
+                    ->defaultValue('DropMigrate')
                     ->info('Configures which driver')
-                    ->example('DropReload | Transactions')
+                    ->example('DropMigrate | Transactions')
                 ->end()
             ->end()
         ;
