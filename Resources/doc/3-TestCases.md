@@ -13,7 +13,7 @@ DoctrineMigrationsTestCase uses Doctrine Migrations to setup the test suite to b
 
 The DropMigrate driver is the standard driver for Doctrine Migrations Test Case. Before each test is run, the database is dropped, created and the migration files are run. This is equivalent to running ``` $ app/console doctrine:database:drop ; app/console doctrine:migrations:migrate``` before each test is executed.
 
-To explicitly define this, set in config.yml or config_test.yml:
+To explicitly define this, set in config_test.yml:
 
 ```
 testbundle:
