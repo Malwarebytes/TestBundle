@@ -38,11 +38,14 @@ class Transactions implements TestCaseDriver {
     /**
      * Function called to setup database and/or environment for testing
      *
+     * True return value will trigger a PostSchemaSetup event. False suppresses the event.
+     *
      * @param Client $client
-     * @return null
+     * @return boolean
      */
     public function setUp(Client $client)
     {
+        $returnValue = false;
         $this->em = $client->getContainer()
             ->get('doctrine')
             ->getManager();
@@ -76,13 +79,13 @@ class Transactions implements TestCaseDriver {
                 $stmt2->execute();
             }
 
-            $event = $client->getContainer()->get('malwarebytes_test.post_schema_setup_event');
-            $dispatcher = $client->getContainer()->get('event_dispatcher');
-            $dispatcher->dispatch('malwarebytes_test.events.post_schema_setup', $event);
+            $returnValue = true;
         }
 
         // Start transaction
         $this->em->getConnection()->beginTransaction();
+
+        return $returnValue;
     }
 
     /**
