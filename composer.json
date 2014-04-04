@@ -1,7 +1,7 @@
 {
     "name":"malwarebytes/test-bundle",
     "description":"Malwarebytes Test Framework and Testing Best Practices for Symfony2",
-    "homepage":"https://github.mb-internal.com/Webapps/TestBundle",
+    "homepage":"https://github.com/Malwarebytes/TestBundle",
     "authors": [
         {
             "name": "Jonathan Chan",
