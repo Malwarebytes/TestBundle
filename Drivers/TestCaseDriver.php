@@ -14,8 +14,10 @@ interface TestCaseDriver {
     /**
      * Function called to setup database and/or environment for testing
      *
+     * True return value will trigger a PostSchemaSetup event. False suppresses the event.
+     *
      * @param Client $client
-     * @return null
+     * @return boolean
      */
     public function setUp(Client $client);
 
