@@ -34,6 +34,7 @@ class DoctrineMigrationTestCase extends BaseWebTestCase {
     protected $application;
     /** @var  EntityManager */
     protected $em;
+
     /** @var  MigrationTestCaseDriver */
     protected $driver;
 
@@ -53,7 +54,11 @@ class DoctrineMigrationTestCase extends BaseWebTestCase {
             throw new \Exception("$driver does not properly implement '\\Malwarebytes\\TestBundle\\Drivers\\MigrationTestCase\\MigrationTestCaseDriver'. Please correct this.");
         }
 
-        $this->driver->setUp($this->client);
+        if ($this->driver->setUp($this->client) === true) {
+            $event = $this->client->getContainer()->get('malwarebytes_test.post_schema_setup_event');
+            $dispatcher = $this->client->getContainer()->get('event_dispatcher');
+            $dispatcher->dispatch('malwarebytes_test.events.post_schema_setup', $event);
+        }
     }
 
     public function __construct(Client $client = null)
