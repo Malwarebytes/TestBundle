@@ -11,12 +11,11 @@ namespace Malwarebytes\TestBundle\Drivers\MigrationTestCase;
 
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\ORM\EntityManager;
-use Malwarebytes\TestBundle\Drivers\TestCaseDriver;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application as App;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class DropMigrate implements TestCaseDriver {
+class DropMigrate implements MigrationTestCaseDriver {
     /** @var  EntityManager */
     private $em;
     /** @var  App */

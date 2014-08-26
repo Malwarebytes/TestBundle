@@ -11,7 +11,7 @@ namespace Malwarebytes\TestBundle\Test;
 
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\ORM\EntityManager;
-use Malwarebytes\TestBundle\Drivers\TestCaseDriver;
+use Malwarebytes\TestBundle\Drivers\MigrationTestCase\MigrationTestCaseDriver;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application as App;
@@ -34,7 +34,7 @@ class DoctrineMigrationTestCase extends BaseWebTestCase {
     protected $application;
     /** @var  EntityManager */
     protected $em;
-    /** @var  TestCaseDriver */
+    /** @var  MigrationTestCaseDriver */
     protected $driver;
 
 
@@ -49,8 +49,8 @@ class DoctrineMigrationTestCase extends BaseWebTestCase {
             throw new \Exception("DoctrineMigrationTestCase Driver '$driver' does not exist. There is a configuration problem in testbundle:doctrine_migration_test_driver.");
         }
         $this->driver = new $driver();
-        if (!is_subclass_of($this->driver,"\\Malwarebytes\\TestBundle\\Drivers\\TestCaseDriver")) {
-            throw new \Exception("$driver does not properly implement '\\Malwarebytes\\TestBundle\\Drivers\\TestCaseDriver'. Please correct this.");
+        if (!is_subclass_of($this->driver,"\\Malwarebytes\\TestBundle\\Drivers\\MigrationTestCase\\MigrationTestCaseDriver")) {
+            throw new \Exception("$driver does not properly implement '\\Malwarebytes\\TestBundle\\Drivers\\MigrationTestCase\\MigrationTestCaseDriver'. Please correct this.");
         }
 
         $this->driver->setUp($this->client);
@@ -63,7 +63,7 @@ class DoctrineMigrationTestCase extends BaseWebTestCase {
 
     public function tearDown()
     {
-        if (isset($this->driver) && is_subclass_of($this->driver,"\\Malwarebytes\\TestBundle\\Drivers\\TestCaseDriver")) {
+        if (isset($this->driver) && is_subclass_of($this->driver,"\\Malwarebytes\\TestBundle\\Drivers\\MigrationTestCase\\MigrationTestCaseDriver")) {
             $this->driver->tearDown($this->client);
         }
     }

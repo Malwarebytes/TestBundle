@@ -134,6 +134,7 @@ doctrine:
 
 testbundle:
     doctrine_migration_test_driver: DropMigrate
+    doctrine_schema_test_driver: DropCreate
 # End of MalwarbytesTestBundle Generated Code
 EOD;
         file_put_contents(self::$configDir . DIRECTORY_SEPARATOR . "config_test.yml",$testSetupParameters,FILE_APPEND);

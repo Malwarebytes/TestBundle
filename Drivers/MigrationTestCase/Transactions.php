@@ -27,7 +27,7 @@ use Symfony\Component\Console\Input\ArrayInput;
  *
  * @package Malwarebytes\TestBundle\Test
  */
-class Transactions implements TestCaseDriver {
+class Transactions implements MigrationTestCaseDriver {
     static private $firstRun = true;
 
     /** @var  EntityManager */
