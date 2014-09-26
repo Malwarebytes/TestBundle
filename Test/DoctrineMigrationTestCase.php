@@ -61,9 +61,15 @@ class DoctrineMigrationTestCase extends BaseWebTestCase {
         }
     }
 
-    public function __construct(Client $client = null)
+    public function __construct($name = null, array $data = array(), $dataName = '')
     {
-        $this->client = $client;
+        // The constructor has to maintain compatibility with phpunit constructor or @dataProvider will fail to work.
+
+        if (is_a($name,'Symfony\Bundle\FrameworkBundle\Client')) {
+            $this->client = $name;
+        } else {
+            parent::__construct($name, $data, $dataName);
+        }
     }
 
     public function tearDown()
