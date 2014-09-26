@@ -14,8 +14,6 @@ use Malwarebytes\TestBundle\Drivers\SchemaTestCase\SchemaTestCaseDriver;
 use Symfony\Bundle\FrameworkBundle\Console\Application as App;
 
 class DoctrineSchemaTestCase extends BaseWebTestCase {
-    /** @var  App */
-    protected $application;
     /** @var  EntityManager */
     protected $em;
     /** @var  SchemaTestCaseDriver */
@@ -24,6 +22,9 @@ class DoctrineSchemaTestCase extends BaseWebTestCase {
     public function setUp()
     {
         parent::setUp();
+
+
+        $this->em=$this->client->getContainer()->get('doctrine')->getManager();
 
         $config=$this->client->getContainer()->getParameter('malwarebytes_test.config');
         $driver = '\\Malwarebytes\\TestBundle\\Drivers\\SchemaTestCase\\'.$config['doctrine_schema_test_driver'];

@@ -29,9 +29,6 @@ use Symfony\Component\Console\Input\ArrayInput;
  * @package Malwarebytes\TestBundle\Test
  */
 class DoctrineMigrationTestCase extends BaseWebTestCase {
-
-    /** @var  App */
-    protected $application;
     /** @var  EntityManager */
     protected $em;
 
@@ -43,6 +40,9 @@ class DoctrineMigrationTestCase extends BaseWebTestCase {
     public function setUp()
     {
         parent::setUp();
+
+
+        $this->em=$this->client->getContainer()->get('doctrine')->getManager();
 
         $config=$this->client->getContainer()->getParameter('malwarebytes_test.config');
         $driver = '\\Malwarebytes\\TestBundle\\Drivers\\MigrationTestCase\\'.$config['doctrine_migration_test_driver'];
