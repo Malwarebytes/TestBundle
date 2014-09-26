@@ -20,7 +20,9 @@ class BaseWebTestCase extends WebTestCase
     {
         parent::setUp();
 
-        $this->client = self::createClient();
+        if ($this->client === null) {
+            $this->client = self::createClient();
+        }
         $this->requireTestDBDiffThanProd();
     }
 
