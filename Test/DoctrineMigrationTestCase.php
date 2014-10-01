@@ -67,6 +67,7 @@ class DoctrineMigrationTestCase extends BaseWebTestCase {
 
         if (is_a($name,'Symfony\Bundle\FrameworkBundle\Client')) {
             $this->client = $name;
+            $this->em = $this->client->getContainer()->get('doctrine')->getManager();
         } else {
             parent::__construct($name, $data, $dataName);
         }
